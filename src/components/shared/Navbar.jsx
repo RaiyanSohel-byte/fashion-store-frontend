@@ -1,9 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { IoMenuOutline, IoCloseOutline, IoBagOutline } from "react-icons/io5";
+import {
+  IoMenuOutline,
+  IoCloseOutline,
+  IoBagOutline,
+  IoMoonOutline,
+  IoSunnyOutline,
+} from "react-icons/io5";
 import { useCart } from "@/contexts/CartContext";
 
 const NAV_LINKS = [
@@ -14,9 +20,40 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
   const pathname = usePathname();
   const { cartCount, isInitialized } = useCart();
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  useEffect(() => {
+    setMounted(true);
+    const storedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+
+    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
+      setIsDarkMode(true);
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = !isDarkMode;
+    setIsDarkMode(newTheme);
+
+    if (newTheme) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  };
 
   return (
     <>
@@ -52,8 +89,24 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Cart */}
           <div className="flex flex-1 lg:flex-none items-center justify-end gap-6">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="group text-muted-foreground hover:text-foreground transition-colors duration-300 focus:outline-none"
+              aria-label="Toggle Theme"
+            >
+              {
+                mounted ?
+                  isDarkMode ?
+                    <IoSunnyOutline className="text-[16px] transition-transform group-hover:-translate-y-[1px]" />
+                  : <IoMoonOutline className="text-[16px] transition-transform group-hover:-translate-y-[1px]" />
+
+                : <div className="h-[16px] w-[16px]" /> // Placeholder to prevent layout shift during hydration
+              }
+            </button>
+
+            {/* Cart */}
             <Link
               href="/cart"
               className="group relative flex items-center gap-2 text-[11px] font-medium uppercase tracking-luxury text-muted-foreground hover:text-foreground transition-colors duration-300"
@@ -77,6 +130,7 @@ export default function Navbar() {
         </div>
       </header>
 
+      {/* Mobile Menu Overlay */}
       <div
         className={`fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
           isOpen ?
@@ -86,6 +140,7 @@ export default function Navbar() {
         onClick={toggleMenu}
       />
 
+      {/* Mobile Menu Sidebar */}
       <aside
         className={`fixed top-0 right-0 z-50 h-full w-4/5 max-w-sm bg-background border-l border-border p-6 shadow-xl transition-transform duration-300 ease-in-out transform lg:hidden ${
           isOpen ? "translate-x-0" : "translate-x-full"
