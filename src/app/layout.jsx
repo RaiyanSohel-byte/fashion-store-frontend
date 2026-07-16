@@ -5,6 +5,7 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import { CartProvider } from "@/contexts/CartContext";
 import { Toaster } from "react-hot-toast";
+import LenisProvider from "@/providers/LenisProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,12 +30,14 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
-          <CartProvider>
-            <Navbar />
-            {children}
-            <Footer />
-            <Toaster />
-          </CartProvider>
+          <LenisProvider>
+            <CartProvider>
+              <Navbar />
+              {children}
+              <Footer />
+              <Toaster />
+            </CartProvider>
+          </LenisProvider>
         </ThemeProvider>
       </body>
     </html>
