@@ -110,10 +110,18 @@ export default function ProductListingPage() {
                 onChange={(e) => setSortOption(e.target.value)}
                 className="w-full appearance-none bg-transparent border-b border-border py-1 pr-6 text-xs text-foreground focus:border-foreground focus:outline-none sm:w-40 cursor-pointer"
               >
-                <option value="featured">Sort by: Featured</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="name-asc">Alphabetical: A-Z</option>
+                <option value="featured" className="bg-background px-3">
+                  Sort by: Featured
+                </option>
+                <option value="price-asc" className="bg-background px-3">
+                  Price: Low to High
+                </option>
+                <option value="price-desc" className="bg-background px-3">
+                  Price: High to Low
+                </option>
+                <option value="name-asc" className="bg-background px-3">
+                  Alphabetical: A-Z
+                </option>
               </select>
               <div className="pointer-events-none absolute right-0 top-1 text-[8px] text-muted-foreground">
                 ▼

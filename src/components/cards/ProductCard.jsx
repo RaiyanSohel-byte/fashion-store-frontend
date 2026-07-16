@@ -7,7 +7,6 @@ const ProductCard = ({ product }) => {
       href={`/products/${product.id}`}
       className={`group block ${!product.inStock ? "cursor-not-allowed" : ""}`}
     >
-      {/* Visual Container */}
       <div className="relative mb-6 aspect-[3/4] w-full overflow-hidden bg-muted">
         <img
           src={product.image}
@@ -27,7 +26,6 @@ const ProductCard = ({ product }) => {
         )}
       </div>
 
-      {/* Typography Block */}
       <div className="flex flex-col items-center text-center">
         <h3 className="mb-2 text-xs font-medium uppercase tracking-wide text-foreground group-hover:text-muted-foreground transition-colors duration-300">
           {product.name}
