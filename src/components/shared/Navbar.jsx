@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoMenuOutline, IoCloseOutline, IoBagOutline } from "react-icons/io5";
+import { useCart } from "@/contexts/CartContext";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -14,7 +15,7 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-
+  const { cartCount, isInitialized } = useCart();
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
@@ -60,7 +61,7 @@ export default function Navbar() {
               <IoBagOutline className="text-sm transition-transform group-hover:-translate-y-[1px]" />
               <span className="hidden sm:inline">Cart</span>
               <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[9px] font-semibold text-background transition-transform group-hover:scale-105">
-                2
+                {isInitialized ? cartCount : 0}
               </span>
             </Link>
 
